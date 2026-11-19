@@ -10,9 +10,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ignoreExpiration: false,
         secretOrKey: 'absensi-secret-key', // 
     });
+
+    console.log('JWT STRATEGY LOADED');
   }
 
   async validate(payload: any) {
+     console.log('JWT PAYLOAD:', payload);
     return payload;
   }
 }

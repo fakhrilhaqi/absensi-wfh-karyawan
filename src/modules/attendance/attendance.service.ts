@@ -12,10 +12,9 @@ export class AttendanceService {
     private attendanceRepository: Repository<Attendance>,  
   ) {}
   
-  async create(createAttendanceDto: CreateAttendanceDto) {
-    const attendance = this.attendanceRepository.create(createAttendanceDto);
-    attendance.attendanceDatetime = new Date(); // Set the current date and time for attendanceDatetime
-    return this.attendanceRepository.save(attendance);
+  async create(createAttendanceDto: CreateAttendanceDto, photo: string) {
+    const attendance = this.attendanceRepository.create({ ...createAttendanceDto, photo, attendanceDatetime: new Date() });
+    return await this.attendanceRepository.save(attendance);
   }
 
   async findAll() {

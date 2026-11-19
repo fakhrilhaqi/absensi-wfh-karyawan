@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(JwtAuthGuard)
 @Controller('attendance')
@@ -10,8 +11,12 @@ export class AttendanceController {
   constructor(private readonly attendanceService: AttendanceService) {}
 
   @Post()
-  create(@Body() createAttendanceDto: CreateAttendanceDto) {
-    return this.attendanceService.create(createAttendanceDto);
+  @UseInterceptors(FileInterceptor('photo',{ dest: './uploads/attendance', }),)
+  create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createAttendanceDto: CreateAttendanceDto
+  ) {
+    return this.attendanceService.create(createAttendanceDto, file.filename);
   }
 
   @Get()

@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AttendanceModule } from './modules/attendance/attendance.module';
-import { UploadModule } from './modules/upload/upload.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { EmployeesModule } from './modules/employees/employees.module';
 
@@ -23,7 +22,6 @@ import { EmployeesModule } from './modules/employees/employees.module';
     AttendanceModule,
     EmployeesModule,
     AuthModule,
-    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

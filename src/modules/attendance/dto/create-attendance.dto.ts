@@ -7,7 +7,4 @@ export class CreateAttendanceDto {
     @IsInt()
     employeeId: number;
 
-    @IsString()
-    @IsNotEmpty()
-    photo: string;
 }
