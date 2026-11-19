@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Attendance } from './entities/attendance.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AttendanceService {
-  create(createAttendanceDto: CreateAttendanceDto) {
-    return 'This action adds a new attendance';
+  constructor(
+    @InjectRepository(Attendance)
+    private attendanceRepository: Repository<Attendance>,  
+  ) {}
+  
+  async create(createAttendanceDto: CreateAttendanceDto) {
+    const attendance = this.attendanceRepository.create(createAttendanceDto);
+    attendance.attendanceDatetime = new Date(); // Set the current date and time for attendanceDatetime
+    return this.attendanceRepository.save(attendance);
   }
 
-  findAll() {
-    return `This action returns all attendance`;
+  async findAll() {
+    return this.attendanceRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} attendance`;
+  async findOne(id: number) {
+    const attendance = await this.attendanceRepository.findOne({ where: { id } });
+
+    if (!attendance) {
+      throw new Error(`Attendance with ID ${id} not found`);
+    }
+    return attendance;
   }
 
-  update(id: number, updateAttendanceDto: UpdateAttendanceDto) {
-    return `This action updates a #${id} attendance`;
+  /*async update(id: number, updateAttendanceDto: UpdateAttendanceDto) {
+    await this.attendanceRepository.update(id, updateAttendanceDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} attendance`;
-  }
+  async remove(id: number) {
+    const attendance = await this.findOne(id);
+    return this.attendanceRepository.remove(attendance);
+  }*/
 }

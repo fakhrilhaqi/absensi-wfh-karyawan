@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('attendance')
 export class AttendanceController {
   constructor(private readonly attendanceService: AttendanceService) {}
@@ -22,7 +24,7 @@ export class AttendanceController {
     return this.attendanceService.findOne(+id);
   }
 
-  @Patch(':id')
+  /*@Patch(':id')
   update(@Param('id') id: string, @Body() updateAttendanceDto: UpdateAttendanceDto) {
     return this.attendanceService.update(+id, updateAttendanceDto);
   }
@@ -30,5 +32,5 @@ export class AttendanceController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.attendanceService.remove(+id);
-  }
+  }*/
 }
