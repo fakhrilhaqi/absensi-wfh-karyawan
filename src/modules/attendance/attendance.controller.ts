@@ -24,10 +24,17 @@ export class AttendanceController {
     return this.attendanceService.findAll();
   }
 
+  @Get('employee/:employeeId')
+  findByEmployee( @Param('employeeId') employeeId: string,) {
+    return this.attendanceService.findByEmployeeId(+employeeId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.attendanceService.findOne(+id);
   }
+
+
 
   /*@Patch(':id')
   update(@Param('id') id: string, @Body() updateAttendanceDto: UpdateAttendanceDto) {

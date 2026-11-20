@@ -30,6 +30,15 @@ export class AttendanceService {
     return attendance;
   }
 
+  async findByEmployeeId(employeeId: number) {
+    const attendance = await this.attendanceRepository.find({ where: { employeeId } });
+
+    if (!attendance) {
+      throw new Error(`Attendance with Employee ID ${employeeId} not found`);
+    }
+    return attendance;
+  }
+
   /*async update(id: number, updateAttendanceDto: UpdateAttendanceDto) {
     await this.attendanceRepository.update(id, updateAttendanceDto);
     return this.findOne(id);
